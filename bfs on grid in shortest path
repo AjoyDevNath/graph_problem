@@ -1,0 +1,83 @@
+
+#include<bits/stdc++.h>
+#define ll long long
+#define pb push_back
+#define ff first
+#define ss second
+using namespace std;
+//vector<int>vec[100001];
+int dis[1001][1001];
+int vis[1001][1001];
+int arr[1001][1001];
+int n;
+int targetX,targetY;
+
+int dx[] = {-2, -1, 1, 2, 2, 1, -1, -2};
+int dy[] = {1, 2, 2, 1, -1, -2, -2, -1};
+
+void fastIO()
+{
+    ios_base::sync_with_stdio(false);
+    cin.tie(0);
+}
+
+bool isValid(int r,int c)
+{
+    if(r < 1 || r > n || c < 1 || c > n)
+    {
+        return false;
+    }
+    return true;
+}
+
+int bfs(int x,int y)
+{
+    queue<pair<int,int>>q;
+    vis[x][y] = 1;
+    dis[x][y] = 0;
+    q.push({x,y});
+
+    while(!q.empty())
+    {
+        int a = q.front().first;
+        int b = q.front().second;
+        q.pop();
+
+        for(int i = 0 ; i < 8; i ++)
+        {
+            if(isValid(dx[i]+a,dy[i]+b) == true && vis[dx[i]+a][dy[i]+b] == 0)
+            {
+                int newX = a + dx[i];
+                int newY = b + dy[i];
+
+                q.push({newX,newY});
+
+                dis[newX][newY] = dis[a][b] + 1;
+                vis[newX][newY] = 1;
+
+                if(newX == targetX && newY == targetY)
+                {
+                    return dis[newX][newY];
+                }
+            }
+        }
+    }
+}
+
+
+void solve()
+{
+    int x,y;
+    cin>>n;
+    char arr[n+1][n+1];
+
+    cin>>x>>y;
+    cin>>targetX>>targetY;
+    cout<<bfs(x,y)<<"\n";
+}
+
+int main()
+{
+    fastIO();
+    solve();
+}
